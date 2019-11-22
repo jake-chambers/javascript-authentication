@@ -15,6 +15,8 @@ const options = {
 
 app.post('/authenticate', function(req,res){
   res.send("we livin famo")
+
+  //do authentication here
 })
 
 https.createServer(options, app)
