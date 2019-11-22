@@ -13,7 +13,6 @@ body,html {
     align-items: center;
     color: lightgray;
     font-size: 40px;
-
 }
 
 #login-body{
@@ -50,6 +49,10 @@ body,html {
     background-color: #351E29;
     cursor: pointer;
     background-color: purple;
+}
+
+#login-form input:focus{
+    outline:none
 }
 
 #login-form input {
