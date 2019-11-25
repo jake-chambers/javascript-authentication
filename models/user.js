@@ -20,7 +20,17 @@ const UserSchema = new mongoose.Schema({
 
 //custom method to generate authToken 
 UserSchema.methods.generateAuthToken = function() { 
-  const token = jwt.sign({ _id: this._id, username: this.username }, config.get('myprivatekey')); //get the private key from the config file -> environment variable
+  let payload = {
+    _id: this._id, 
+    username: this.username 
+  }
+
+  let options = {
+    expiresIn: "120000" //ms
+  }
+  
+  //get the private key from the config file -> environment variable
+  const token = jwt.sign(payload, config.get('myprivatekey'), options); 
   return token;
 }
 

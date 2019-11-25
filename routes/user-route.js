@@ -6,7 +6,32 @@ const auth = require("../middleware/auth");
 
 const router = express.Router();
 
+
+router.post("/login", async(req,res) => {
+    console.log("attempting to login...")
+    const username = req.body.username
+    const password = req.body.password
+
+    const user = await User.findOne({username})
+
+    if (user && bcrypt.compareSync(password, user.password)){
+        console.log("authenticated")
+        const token = user.generateAuthToken();
+        res.append("x-auth-token", token)
+        res.send()
+    }
+    else{
+        console.log("unauthenticated")
+        res.sendStatus(401)
+    }
+});
+
+router.get("/profile", auth, async (req,res) => {
+    res.send("u made it")
+});
+
 router.get("/current", auth, async (req, res) => {
+    //first checks jwt using auth middleware
     //finds user excludes password
     const user = await User.findById(req.user._id).select("-password");
     res.send(user);
@@ -35,13 +60,6 @@ router.post("/new", async (req, res) => {
 
     user.password = await bcrypt.hash(user.password, 10);
     await user.save();
-
-    const token = user.generateAuthToken();
-
-    res.header("x-auth-token", token).send({
-        _id: user._id,
-        username: user.username,
-    });
 });
 
 

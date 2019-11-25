@@ -7,17 +7,43 @@ const authenticate = () => {
     if (validateInputs(username, password)) {
         axios({
             method: 'post',
-            url: '/authenticate',
+            url: '/users/login',
             data: {
                 username: username,
                 password: password
             },
         })
         .then(function (response) {
-            alert("successfully sent request")
+            if (response.status == 200){
+                console.log("success")
+                let token = response.headers['x-auth-token']
+                window.localStorage.setItem('token', token)
+                console.log("redirecting...")
+                authenticationRedirect()
+            }
+        })
+        .catch(function(err){
+            alert("bad credentials")
         })
     }
 
+}
+
+authenticationRedirect = () => {
+    let config = {
+        headers: {'Authorization': window.localStorage.getItem('token')},
+    }
+
+    axios({
+        method: 'get',
+        url: '/users/profile',
+        headers: {
+            'Authorization': window.localStorage.getItem('token')
+        }
+    })
+    .then(function(response){
+        console.log(response)
+    })
 }
 
 
