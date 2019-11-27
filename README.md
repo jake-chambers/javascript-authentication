@@ -1,4 +1,4 @@
-# javascript-authentication
+# jwt-fun
 
 ## Table of Contents
 + [About](#about)
