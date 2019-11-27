@@ -30,10 +30,6 @@ const authenticate = () => {
 }
 
 authenticationRedirect = () => {
-    let config = {
-        headers: {'Authorization': window.localStorage.getItem('token')},
-    }
-
     axios({
         method: 'get',
         url: '/users/profile',
@@ -43,6 +39,7 @@ authenticationRedirect = () => {
     })
     .then(function(response){
         console.log(response)
+        document.write(response.data)
     })
 }
 

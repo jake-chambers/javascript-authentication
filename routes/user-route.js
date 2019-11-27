@@ -5,7 +5,7 @@ const { User, validate } = require("../models/user");
 const auth = require("../middleware/auth");
 
 const router = express.Router();
-
+const path = require('path')
 
 router.post("/login", async(req,res) => {
     console.log("attempting to login...")
@@ -26,15 +26,8 @@ router.post("/login", async(req,res) => {
     }
 });
 
-router.get("/profile", auth, async (req,res) => {
-    res.send("u made it")
-});
-
-router.get("/current", auth, async (req, res) => {
-    //first checks jwt using auth middleware
-    //finds user excludes password
-    const user = await User.findById(req.user._id).select("-password");
-    res.send(user);
+router.get('/profile', auth, async (req,res) => {
+    res.sendFile(path.join(__dirname, '../static/profile.html'))
 });
 
 router.post("/new", async (req, res) => {
